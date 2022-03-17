@@ -17,7 +17,7 @@ const Home = () => {
           <Widget type="balance" />
         </div>
         <div className="charts">
-          
+         <Featu
         </div>
       </div>
     </div>
