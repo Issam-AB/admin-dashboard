@@ -2,8 +2,7 @@
   flex: 2;
   -webkit-box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, #00000014 0px 0px 0px 1px;
   padding: 10px;
 
   .top {
@@ -27,8 +26,8 @@
     gap: 15px;
 
     .featuredChart {
-      width: 100px;
-      height: 100px;
+      width: 155px;
+      height: 155px;
     }
 
     .title {
