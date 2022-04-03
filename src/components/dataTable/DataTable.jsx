@@ -9,6 +9,7 @@ const DataTable = () => {
       field: "action",
       headerName: "Action",
       width: "200",
+      flex: 1,
       renderCell: () => {
         return (
           <div className="cellAction">
@@ -24,8 +25,8 @@ const DataTable = () => {
       <DataGrid
         rows={userRows}
         columns={userColumns.concat(actionColumn)}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={9}
+        rowsPerPageOptions={[9]}
         checkboxSelection
       />
     </div>
