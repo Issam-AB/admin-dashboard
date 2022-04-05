@@ -24,8 +24,8 @@ const DataTable = () => {
     },
   ];
   return (
-    <div className="dataTable">
-      <div className="dataTableTitle">
+    <div className="datatable">
+      <div className="datatableTitle">
         Add New User
         <Link
           to="/users/new"
@@ -36,6 +36,7 @@ const DataTable = () => {
         </Link>
       </div>
       <DataGrid
+        className="datagrid"
         rows={userRows}
         columns={userColumns.concat(actionColumn)}
         pageSize={9}

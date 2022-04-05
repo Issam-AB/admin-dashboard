@@ -5,15 +5,18 @@ import List from "./pages/list/List.jsx";
 import Single from "./pages/single/Single.jsx";
 import New from "./pages/new/New,.jsx";
 import { productInputs, userInputs } from "./formSource";
+import "./style/dark.scss";
+import React from "react";
 
 function App() {
+  const [dark, setDark] = React.useState(false);
   return (
-    <div className="App">
+    <div className={dark ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route index element={<Home />} />
-            <Route path="login" element={<Login />} />
+            <Route index element={<Home setDark={setDark} />} />
+            <Route path="login" element={<Login setDark={setDark} />} />
 
             <Route path="users">
               <Route index element={<List />} />
