@@ -4,7 +4,9 @@ import { DataGrid } from "@mui/x-data-grid";
 import { userColumns, userRows } from "../../dataTableSource";
 import { Link } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase.js";
+
 const DataTable = () => {
   const [data, setData] = useState([]);
 
@@ -26,8 +28,13 @@ const DataTable = () => {
 
   console.log(data);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await deleteDoc(doc(db, "users", id));
+      setData(data.filter((item) => item.id !== id));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const actionColumn = [
