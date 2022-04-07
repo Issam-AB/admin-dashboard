@@ -3,9 +3,40 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import "./new.scss";
+import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { db, auth } from "../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const New = ({ inputs, title }) => {
   const [file, setFile] = React.useState("");
+  const [data, setData] = React.useState({});
+
+  const handlAdded = async (e) => {
+    e.preventDefault();
+    try {
+      const res = createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      // using the id when want to delete user will be gonna deleted in the same time in authenticated db 
+      await setDoc(doc(db, "users", (await res).user.uid), {
+        ...data,
+        timeStamp: serverTimestamp(),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // slect all from objet formSource
+  const handlInput = (e) => {
+    const id = e.target.id;
+    const value = e.target.value;
+
+    setData({ ...data, [id]: value });
+  };
+
   return (
     <div className="new">
       <Sidebar />
@@ -26,7 +57,7 @@ const New = ({ inputs, title }) => {
             />
           </div>
           <div className="right">
-            <form>
+            <form onSubmit={handlAdded}>
               <div className="formInput">
                 <label htmlFor="file">
                   Image: <DriveFolderUploadOutlinedIcon className="icon" />
@@ -41,11 +72,16 @@ const New = ({ inputs, title }) => {
               {inputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>
-                  <input type={input.text} placeholder={input.placeholder} />
+                  <input
+                    id={input.id}
+                    type={input.text}
+                    placeholder={input.placeholder}
+                    onChange={handlInput}
+                  />
                 </div>
               ))}
 
-              <button>Send</button>
+              <button type="submit">Send</button>
             </form>
           </div>
         </div>
