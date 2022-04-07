@@ -3,7 +3,7 @@ import "./dataTable.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { userColumns, userRows } from "../../dataTableSource";
 import { Link } from "react-router-dom";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../../firebase.js";
 
@@ -11,19 +11,36 @@ const DataTable = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      let list = [];
-      try {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        querySnapshot.forEach((doc) => {
+    // const fetchData = async () => {
+    //   let list = [];
+    //   try {
+    //     const querySnapshot = await getDocs(collection(db, "users"));
+    //     querySnapshot.forEach((doc) => {
+    //       list.push({ id: doc.id, ...doc.data() });
+    //     });
+    //     setData(list);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // fetchData();
+
+    // LISTEN (REALTIME)
+    const unsub = onSnapshot(
+      collection(db, "users"),
+      (snapshot) => {
+        let list = [];
+        snapshot.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
         setData(list);
-      } catch (error) {
-        console.log(error);
-      }
+      },
+      (error) => console.log(error)
+    );
+
+    return () => {
+      unsub();
     };
-    fetchData();
   }, []);
 
   console.log(data);
