@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./login.scss";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
 
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "", error: false });
 
   const navitage = useNavigate();
+
+  const { dispatch } = useContext(AuthContext);
 
   const handlLogin = (e) => {
     e.preventDefault();
@@ -16,8 +19,8 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        // ...
 
+        dispatch({ type: "LOGIN", payload: user });
         navitage("/");
       })
       .catch((error) => {
@@ -30,7 +33,7 @@ const Login = () => {
     <div className="login">
       <form>
         <input
-          type="text"
+          type="email"
           placeholder="email"
           onChange={(e) => {
             setUser({ ...user, email: e.target.value });
